@@ -3,9 +3,14 @@ package com.codeanalysis.platform.controller;
 import com.codeanalysis.platform.model.AnalysisRequest;
 import com.codeanalysis.platform.model.AnalysisResult;
 import com.codeanalysis.platform.service.AnalysisService;
+
+import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.codeanalysis.platform.model.ScanRecord;
 
 @RestController
 @RequestMapping("/api/analysis")
@@ -26,4 +31,13 @@ public class AnalysisController {
         return "Analysis service is running";
     }
 
+    @GetMapping("/history")
+    public List<ScanRecord> getAllScans() {
+        return analysisService.getAllScans();
+    }
+
+    @GetMapping("/history/{fileName}")
+    public List<ScanRecord> getScansByFileName(@PathVariable String fileName) {
+        return analysisService.getScansByFileName(fileName);
+    }
 }

@@ -4,8 +4,18 @@ import com.codeanalysis.platform.model.AnalysisRequest;
 import com.codeanalysis.platform.model.AnalysisResult;
 import org.springframework.stereotype.Service;
 
+import com.codeanalysis.platform.model.ScanRecord;
+import com.codeanalysis.platform.repository.ScanRecordRepo;
+
+import java.util.List;
+
 @Service
 public class AnalysisService {
+    private final ScanRecordRepo repository;
+
+    public AnalysisService(ScanRecordRepo repository) {
+        this.repository = repository;
+    }
 
     public AnalysisResult analyze(AnalysisRequest request) {
         String code = request.getCode();
@@ -16,7 +26,19 @@ public class AnalysisService {
         int importCount = countImports(code);
         String complexity = assessComplexity(methodCount, lineCount);
 
+        // Saving to database
+        ScanRecord record = new ScanRecord(fileName, code, methodCount, lineCount, importCount, complexity);
+        repository.save(record);
+
         return new AnalysisResult(fileName, methodCount, lineCount, importCount, complexity);
+    }
+
+    public List<ScanRecord> getAllScans() {
+        return repository.findAll();
+    }
+
+    public List<ScanRecord> getScansByFileName(String fileName) {
+        return repository.findByFileName(fileName);
     }
 
     private int countLines(String code) {

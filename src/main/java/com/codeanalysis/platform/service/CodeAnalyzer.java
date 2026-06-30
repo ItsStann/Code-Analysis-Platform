@@ -61,7 +61,7 @@ public class CodeAnalyzer {
 
     private List<String> findUnusedImports(String code, List<String> imports) {
         // Removes import lines (thus scanning only code)
-        String codeWithoutImports = code.replaceAll("^import.*\n", "");
+        String codeWithoutImports = code.replaceAll("(?m)^import.*\\r?\\n", "");
         List<String> unused = new ArrayList<>();
         for (String className : imports) {
             if (!codeWithoutImports.contains(className)) {

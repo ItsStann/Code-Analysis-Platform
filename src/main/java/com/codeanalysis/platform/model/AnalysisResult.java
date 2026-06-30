@@ -33,6 +33,7 @@ public class AnalysisResult {
         this.unusedImports = unusedImports;
         this.longestMethod = longestMethod;
         this.longestMethodLines = longestMethodLines;
+        this.recommendation = recommendation;
     }
 
     public String getFileName() {
@@ -105,6 +106,14 @@ public class AnalysisResult {
 
     public void setLongestMethod(String longestMethod) {
         this.longestMethod = longestMethod;
+    }
+
+    public int getLongestMethodLines() {
+        return longestMethodLines;
+    }
+
+    public void setLongestMethodLines(int longestMethodLines) {
+        this.longestMethodLines = longestMethodLines;
     }
 
     public String getRecommendation() {

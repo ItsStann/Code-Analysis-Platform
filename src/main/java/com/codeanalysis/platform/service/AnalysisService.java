@@ -12,25 +12,24 @@ import java.util.List;
 @Service
 public class AnalysisService {
     private final ScanRecordRepo repository;
+    private final CodeAnalyzer analyzer;
 
-    public AnalysisService(ScanRecordRepo repository) {
+    public AnalysisService(ScanRecordRepo repository, CodeAnalyzer analyzer) {
         this.repository = repository;
+        this.analyzer = analyzer;
     }
 
     public AnalysisResult analyze(AnalysisRequest request) {
-        String code = request.getCode();
-        String fileName = request.getFileName();
+        AnalysisResult result = analyzer.analyze(request.getCode(), request.getFileName());
 
-        int lineCount = countLines(code);
-        int methodCount = countMethods(code);
-        int importCount = countImports(code);
-        String complexity = assessComplexity(methodCount, lineCount);
-
-        // Saving to database
-        ScanRecord record = new ScanRecord(fileName, code, methodCount, lineCount, importCount, complexity);
+        ScanRecord record = new ScanRecord(
+                request.getFileName(), request.getCode(),
+                result.getMethodCount(), result.getLineCount(),
+                result.getImportCount(), result.getComplexityLevel());
+        // Saves to database
         repository.save(record);
 
-        return new AnalysisResult(fileName, methodCount, lineCount, importCount, complexity);
+        return result;
     }
 
     public List<ScanRecord> getAllScans() {
@@ -39,50 +38,5 @@ public class AnalysisService {
 
     public List<ScanRecord> getScansByFileName(String fileName) {
         return repository.findByFileName(fileName);
-    }
-
-    private int countLines(String code) {
-        if (code == null || code.isEmpty())
-            return 0;
-        return code.split("\n").length;
-    }
-
-    private int countMethods(String code) {
-        if (code == null || code.isEmpty())
-            return 0;
-        int count = 0;
-        for (String line : code.split("\n")) {
-            String trimmed = line.trim();
-            if (trimmed.contains("(")
-                    && trimmed.contains(")")
-                    && trimmed.endsWith("{")
-                    && !trimmed.startsWith("if")
-                    && !trimmed.startsWith("for")
-                    && !trimmed.startsWith("while")
-                    && !trimmed.startsWith("class")) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    private int countImports(String code) {
-        if (code == null || code.isEmpty())
-            return 0;
-        int count = 0;
-        for (String line : code.split("\n")) {
-            if (line.trim().startsWith("import ")) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    private String assessComplexity(int methodCount, int lineCount) {
-        if (lineCount > 200 || methodCount > 15)
-            return "HIGH";
-        if (lineCount > 100 || methodCount > 8)
-            return "MEDIUM";
-        return "LOW";
     }
 }

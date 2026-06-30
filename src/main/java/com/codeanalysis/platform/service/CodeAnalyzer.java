@@ -10,7 +10,7 @@ import java.util.regex.*;
 public class CodeAnalyzer {
     // Matches method signatures
     private static final Pattern METHOD_PATTERN = Pattern.compile(
-            "^\\\\s*(public|private|protected)\\\\s+(static\\\\s+)?(\\\\w+)\\\\s+(\\\\w+)\\\\s*\\\\([^)]*\\\\)\\\\s*(\\\\{)?",
+            "^\\s*(public|private|protected)\\s+(static\\s+)?(\\w+)\\s+(\\w+)\\s*\\([^)]*\\)\\s*\\{?",
             Pattern.MULTILINE);
 
     // Matches import statements

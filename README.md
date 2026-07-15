@@ -112,4 +112,4 @@ The static analysis engine (`CodeAnalyzer.java`) processes the submitted code in
 4. **Import Analysis** - import statements are taken and cross-referenced with the code body to find unused ones
 5. **Recommendation** - certain requirements are needed from complexity, method count, unused import count, line count, andduplicates to trigger specific suggestions for the code
 
-**INSPIRED ON CURRENT (2026) STATIC CODE ANALYSIS TOOLS USED IN PROFESSIONAL SETTINGS LIKE SONARQUBE AND PMD
+**INSPIRED ON CURRENT (2026) STATIC CODE ANALYSIS TOOLS USED IN PROFESSIONAL SETTINGS LIKE SONARQUBE AND PMD**

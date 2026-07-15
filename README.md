@@ -57,11 +57,12 @@ docker run --name codeanalysis-db -e POSTGRES_PASSWORD=password -e
 POSTGRES_DB=codeanalysis -p 5432:5432 -d postgres:16
 ```
 2. Create a `.env` file in project root:
+```
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/codeanalysis
 SPRING_DATASOURCE_USERNAME=postgres
 SPRING_DATASOURCE_PASSWORD=password
 (Can be changed to whatever you prefer for username and password)
-
+```
 3. Run the Spring Boot server:
 ```BASH
 mvnw.cmd spring-boot:run
